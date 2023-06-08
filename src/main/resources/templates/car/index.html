@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        table, th, td {
+            border: black solid 1px;
+            border-collapse: collapse;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <title>Cars</title>
+</head>
+<body>
+<p>
+<h2>CARS</h2>
+</p>
+<div id="placeholder"></div>
+<div>
+    <a href="/car/add">ADD</a>
+    <a href="/">HOME</a>
+</div>
+<div>
+    <table>
+        <thead>
+        <tr>
+            <th>BRAND</th>
+            <th>MODEL</th>
+            <th>PLATE</th>
+            <th colspan="3">OPERATIONS</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="c : ${carList}">
+            <td th:text="${c.brand}"></td>
+            <td th:text="${c.model}"></td>
+            <td th:text="${c.plate}"></td>
+            <td><button th:onclick="rent([[${c.id}]])">Rent</button></td>
+            <td><button th:onclick="update([[${c.id}]])">Update</button></td>
+            <td><button th:onclick="remove([[${c.id}]])">Delete</button></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script>
+    function update(id){
+        $.ajax({
+            url: '/car/update',
+            type: 'get',
+            data: { 'id': id },
+            success: function( data ) {
+                $('#placeholder').html(data);
+            },
+            error: function(result){
+                alert("Error: " + result);
+            }
+        });
+    }
+    function remove(id){
+        $.ajax({
+            url: '/car/del',
+            type: 'get',
+            data: { 'id': id },
+            success: function( data ) {
+                $('#placeholder').html(data);
+            },
+            error: function(result){
+                alert("Error: " + result);
+            }
+        });
+    }
+    function rent(id){
+        alert("The id : " + id);
+    }
+</script>
+</body>
+</html>
